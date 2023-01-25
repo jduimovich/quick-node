@@ -1,69 +1,24 @@
 schemaVersion: 2.2.0
 metadata:
-  name: nodejs
-  version: 1.0.1
-  displayName: Node.js Runtime
-  description: Stack with Node.js 14
-  tags: ["NodeJS", "Express", "ubi8"]
-  projectType: "nodejs"
-  language: "nodejs"
+  name: single-nodejs-app
+  projectType: container
+  language: container
   attributes:
-    alpha.dockerimage-port: 3001
-  provider: Red Hat
-  supportUrl: https://github.com/devfile-samples/devfile-support#support-information
+    alpha.dockerimage-port: 8080
+  version: 1.0.0
+  provider: Red Hat  
 components:
   - name: outerloop-build
     image:
-      imageName: nodejs-image:latest
+      imageName: single-nodejs-app
       dockerfile:
-        uri: Dockerfile
+        uri: docker/Dockerfile
         buildContext: .
         rootRequired: false
   - name: outerloop-deploy
     kubernetes:
-      uri: outerloop-deploy.yaml
-  - name: runtime
-    container:
-      image: registry.access.redhat.com/ubi8/nodejs-14:latest
-      memoryLimit: 1024Mi
-      mountSources: true
-      sourceMapping: /project
-      endpoints:
-        - name: http-3000
-          targetPort: 3000
+      uri: deployment.yaml
 commands:
-  - id: install
-    exec:
-      component: runtime
-      commandLine: npm install
-      workingDir: /project
-      group:
-        kind: build
-        isDefault: true
-  - id: run
-    exec:
-      component: runtime
-      commandLine: npm start
-      workingDir: /project
-      group:
-        kind: run
-        isDefault: true
-  - id: debug
-    exec:
-      component: runtime
-      commandLine: npm run debug
-      workingDir: /project
-      group:
-        kind: debug
-        isDefault: true
-  - id: test
-    exec:
-      component: runtime
-      commandLine: npm test
-      workingDir: /project
-      group:
-        kind: test
-        isDefault: true
   - id: build-image
     apply:
       component: outerloop-build
