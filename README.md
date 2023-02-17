@@ -1,8 +1,7 @@
-# fast-build
+# quick-build
 
-This is a repo that has a Dockerfile and a random devfile copied from samples which uses that Dockerfile to build.
-
-The Dockerfile is a stripped down file which basically packages up and existing image and no additiona work performed
+This is a repo uses an existing pre-built container as the base image and nothing else.
+This is to test a quick build and deploy where the build should take minimal time and the application is still deployed in an e2e Stone Soup demo. 
 
 ```
 FROM quay.io/jduimovich0/single-nodejs-app 
